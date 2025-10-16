@@ -4,63 +4,76 @@ import { BASE_URL } from '../utility/constant';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utility/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { passwordIconObj } from '../utility/constant';
 
 const Login = () => {
 
-const [emailId, setEmail] = useState('lavanya@gmail.com');
-const [password, setPassword] = useState('Lavanya@123');
+    const [emailId, setEmail] = useState('jeya@yopmail.com');
+    const [password, setPassword] = useState('Jeya@123');
+    const [error, setError] = useState("");
+    const [boolIcon, setBoolIcon] = useState(true);
+    const [passwordIcon, setPasswordIcon] = useState(passwordIconObj[boolIcon]);
 
-const dispatch = useDispatch();
-const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-const createLogin = async () => {
-    console.log(emailId, password)
-    try {
-        const res = await axios.post(BASE_URL + '/login', 
-            { emailId, password }, 
-            { withCredentials: true }
-        );
-        dispatch(addUser(res?.data));
-        return navigate("/");
-    } catch(err) {
-        console.error(err);
+    // password Icon
+    function showPasswordIcon() {
+        setBoolIcon(!boolIcon);
+        setPasswordIcon(passwordIconObj[!boolIcon]);
     }
-}
 
-  return (
-    <div>
-        <div className='bg-gray-900 w-120 h-80 shadow-2xl m-auto mt-15 rounded-2xl'>
-            <div className='space-y-4'>
-                <div className='flex flex-col pt-10 m-5 p-3'>
-                    <label htmlFor='email' className='align-left m-2 font-bold'>Email ID</label>
+    const createLogin = async () => {
+        try {
+            const res = await axios.post(BASE_URL + '/login', 
+                { emailId, password }, 
+                { withCredentials: true }
+            );
+            dispatch(addUser(res?.data));
+            return navigate("/");
+        } catch(err) {
+            setError(err?.response.data);
+        }
+    }
+
+    return (
+        <div>
+            <div className='bg-base-300 w-80 h-90 shadow-2xl m-auto mt-15 rounded-2xl'>
+                <h3 className='font-bold text-xl flex justify-center pt-4'>Login</h3>
+                <div className='flex flex-col justify-center pt-3 m-4 p-2'>
+                    <label className='align-left m-2 font-bold'>Email ID</label>
                     <input type="email" 
-                        id="email"
-                        name="email"
                         value = {emailId}
                         onChange={(e) => setEmail(e.target.value)}
-                        className='bg-gray-700 h-9 w-100 p-4 m-2 rounded-sm'
+                        className='bg-gray-700 h-9 w-65 p-2 m-2 rounded-sm'
                     />
-                    <label htmlFor='password' className='align-left m-2 font-bold'>Password</label>
-                    <input type="password"
-                        id="password" 
-                        name="password"
-                        value = {password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className='bg-gray-700 h-9 w-100 p-4 m-2 rounded-sm'
-                    />
+                    <label className='align-left m-2 font-bold'>Password</label>
+                    <div className='relative w-20'>
+                        <input type = {boolIcon ? "password" : "text" }
+                            value = {password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className='bg-gray-700 h-9 w-65 p-2 m-2 rounded-sm'
+                        />
+                        <span>
+                            <img src={passwordIcon} alt='showIcon'
+                            onClick={showPasswordIcon}
+                            className='absolute -right-44 top-4 w-5 h-5 rounded-2xl cursor-pointer invert'
+                        />
+                        </span>
+                    </div>
+                <p className='text-red-600'>{error}</p>
                 </div>
                     <div className='flex justify-end-safe pr-10'>
                         <button 
                             type="button"
                             onClick={createLogin}
-                            className='m-1 mb-3 w-18 h-10 bg-gray-500 rounded-xl cursor-pointer'>
+                            className='m-1 mb-3 w-18 h-10 bg-emerald-700 rounded-xl cursor-pointer'>
                             LOGIN
                         </button>
                     </div>
             </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default Login
