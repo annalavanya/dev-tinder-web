@@ -1,4 +1,3 @@
-import React from 'react'
 
 const UserCard = (props) => {
     const { firstName, lastName, photoUrl, skills, about } = props?.data;
