@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:7777";
+export const BASE_URL = "/api";
 
 export const passwordIconObj = {
     true: "https://static.thenounproject.com/png/22249-200.png",
