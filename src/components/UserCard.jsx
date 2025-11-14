@@ -1,6 +1,19 @@
+import axios from "axios";
+import { BASE_URL } from "../utility/constant";
 
 const UserCard = (props) => {
-    const { firstName, lastName, photoUrl, skills, about } = props?.data;
+    const { _id, firstName, lastName, photoUrl, skills, about } = props?.data;
+
+    async function addInterested() {
+      try {
+        const res = await axios.post(`${BASE_URL}/sendConnectionRequest/Interested/${_id}`, 
+          { withCredentials: true }
+        );
+        console.log(res?.data?.data);
+      } catch(err) {
+        console.log(err?.response);
+      }
+    }
 
   return (
     <div className='m-3'>
@@ -10,10 +23,13 @@ const UserCard = (props) => {
         </div>
         <p className='text-center font-bold p-1'>{firstName + " " + lastName}</p>
         { about && <p className='text-xs ml-3 justify-normal'>{about}</p>}
-        { skills && <p>{skills.join(', ')}</p>}
-        <div className='flex justify-between m-3 mt-20'>
-          <button className='w-22 h-8 bg-pink-500 rounded-2xl m-r2 cursor-pointer hover:bg-pink-600'>Interested</button>
-          <button className='w-22 h-8 bg-purple-500 rounded-2xl cursor-pointer hover:bg-purple-600'>Ignored</button>
+        { skills && <p className="text-m ml-3">{skills.join(', ')}</p>}
+        <div className='flex flex-row justify-between mt-5'>
+          <button 
+            className='p-2 mx-3 my-5 bg-pink-500 rounded-2xl cursor-pointer hover:bg-pink-600'
+            onClick={addInterested}
+            >Interested</button>
+          <button className= 'p-2 mx-3 my-5 bg-purple-500 rounded-2xl cursor-pointer hover:bg-purple-600'>Ignored</button>
         </div>
       </div>
     </div>

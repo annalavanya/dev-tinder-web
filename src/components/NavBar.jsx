@@ -31,17 +31,17 @@ const NavBar = () => {
             {
                 user &&
                 <div className="w-10 rounded-full flex flex-row">
-                    <img alt="Tailwind CSS Navbar component" src={user?.photoUrl} />
+                    <img alt="user" src={user?.photoUrl} />
                 </div>
             }
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-25 p-2 shadow">
             <li>
               <Link to="/profile" className="justify-between">
                 Profile
-                <span className="badge">New</span>
+                {/* <span className="badge">New</span> */}
               </Link>
             </li>
             <li><Link>Settings</Link></li>
@@ -50,7 +50,7 @@ const NavBar = () => {
         </div>
       </div>
     </div>  
-    )
+  )
 }
 
 export default NavBar
